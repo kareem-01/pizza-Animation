@@ -1,6 +1,11 @@
 package com.example.pizzaanimation.MainScreen
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.SpringSpec
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +25,7 @@ import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,7 +54,7 @@ fun PizzaSelectionScreen(
     val state by viewModel.pizzaUiState.collectAsState()
     val pagerState = rememberPagerState()
     val pizzaSize by remember {
-        mutableStateOf(270)
+        mutableStateOf(240)
     }
     PizzaSelectionContent(
         pizzaUiState = state,
@@ -71,6 +77,7 @@ fun PizzaSelectionScreen(
                 )
             }
         },
+        pizzaSize
     )
 
 }
@@ -81,7 +88,19 @@ fun PizzaSelectionContent(
     pizzaUiState: PizzaSelectionUiState,
     pagerState: PagerState,
     sizeButtonClick: (size: PizzaSize) -> Unit,
+    pizzaSize: Int,
 ) {
+    val currentSize = pizzaUiState.pizzas[pagerState.currentPage].pizzaSize
+    val currentSizeDp = when (currentSize) {
+        PizzaSize.Small -> 220.dp
+        PizzaSize.Medium -> 240.dp
+        PizzaSize.Large -> 260.dp
+    }
+    val size by animateDpAsState(targetValue = currentSizeDp,
+  tween(400, easing = LinearEasing)  )
+    LaunchedEffect(key1 = pizzaUiState.pizzas[pagerState.currentPage].pizzaSize) {
+
+    }
     Column(
         Modifier
             .fillMaxSize()
@@ -105,35 +124,59 @@ fun PizzaSelectionContent(
             Image(
                 painter = painterResource(id = R.drawable.plate),
                 contentDescription = null,
-                modifier = Modifier.padding(42.dp)
+                modifier = Modifier
+                    .padding(42.dp)
                     .size(350.dp)
             )
             HorizontalPager(pageCount = pizzaUiState.pizzas.size, state = pagerState) { page ->
-                Image(
-                    modifier = Modifier
+                Box(
+                    Modifier
                         .padding(72.dp)
-                        .animateContentSize()
-                        .size(
-                            when (pizzaUiState.pizzas[page].pizzaSize) {
-                                PizzaSize.Small -> 220.dp
-                                PizzaSize.Medium -> 240.dp
-                                PizzaSize.Large -> 260.dp
-                            }
+                        .animateContentSize(
+                            animationSpec = SpringSpec(
+                                stiffness = Spring.StiffnessLow
+                            )
                         )
-                        ,
-                    painter = painterResource(id = pizzaUiState.pizzas[page].breadType),
-                    contentDescription = null,
-                )
+                        .size(
+                          size
+                        )
+                ) {
+                    Image(
+                        modifier = Modifier
+                            .animateContentSize(
+                                animationSpec = SpringSpec(
+                                    stiffness = Spring.StiffnessLow
+                                )
+                            ),
+                        painter = painterResource(id = pizzaUiState.pizzas[page].breadType),
+                        contentDescription = null,
+                    )
+                }
+
             }
         }
 
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            SizeButton(size = PizzaSize.Small, onClickSize = sizeButtonClick)
+            SizeButton(
+                size = PizzaSize.Small,
+                onClickSize = sizeButtonClick,
+                currentSize = currentSize
+            )
             HorizontalSpacer(spacing = 8.dp)
-            SizeButton(size = PizzaSize.Medium, onClickSize = sizeButtonClick)
+            SizeButton(
+                size = PizzaSize.Medium,
+                onClickSize = sizeButtonClick,
+                currentSize = currentSize
+            )
             HorizontalSpacer(spacing = 8.dp)
-            SizeButton(size = PizzaSize.Large, onClickSize = sizeButtonClick)
+            SizeButton(
+                size = PizzaSize.Large,
+                onClickSize = sizeButtonClick,
+                currentSize = currentSize
+            )
         }
+
+        Text(text = "Customize Your Pizza")
 
     }
 }
