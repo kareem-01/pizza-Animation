@@ -1,5 +1,6 @@
 package com.example.pizzaanimation.Model
 
+import com.example.pizzaanimation.R
 import com.example.pizzaanimation.ui.theme.basil
 import com.example.pizzaanimation.ui.theme.broccoli
 import com.example.pizzaanimation.ui.theme.mushrooms
@@ -15,18 +16,28 @@ data class PizzaUiState(
 
 val pizzaAddOnsList = listOf(
     AddOns(
-        name = basil
+        name = basil,
+        imageId = R.drawable.basil_1,
+        addOnsGroupId = R.drawable.basil_group
     ),
     AddOns(
-        name = onions
+        name = onions,
+        imageId = R.drawable.onion_1,
+        addOnsGroupId = R.drawable.onion_group
     ),
     AddOns(
-        name = broccoli
+        name = broccoli,
+        imageId = R.drawable.broccoli_1,
+        addOnsGroupId = R.drawable.broccoli_group
     ),
     AddOns(
-        name = mushrooms
+        name = mushrooms,
+        imageId = R.drawable.mushroom_1,
+        addOnsGroupId = R.drawable.mushroom_group
     ),
     AddOns(
-        name = sausages
+        name = sausages,
+        imageId = R.drawable.sausage_1,
+        addOnsGroupId = R.drawable.suasage_group
     ),
-    )
+)
