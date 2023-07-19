@@ -33,5 +33,23 @@ class PizzaViewModel : ViewModel() {
         Log.i("Pizza", "${_pizzaUiState.value.pizzas[pizza]}")
     }
 
+    fun ingredientClick(pizza: Int, addOn: Int) {
+        Log.i("ADDON", _pizzaUiState.value.pizzas[pizza].addOns[addOn].toString())
+
+        _pizzaUiState.update { currentState ->
+            val updatedPizzas = currentState.pizzas.toMutableList()
+            val pizzaToAddOn = currentState.pizzas[pizza].addOns[addOn]
+            val updatedAddOn = pizzaToAddOn.copy(isSelected = !pizzaToAddOn.isSelected)
+            updatedPizzas[pizza] = currentState.pizzas[pizza].copy(
+                addOns = currentState.pizzas[pizza].addOns.toMutableList().apply {
+                    set(addOn, updatedAddOn)
+                }
+            )
+
+            currentState.copy(pizzas = updatedPizzas)
+        }
+        Log.i("ADDON", _pizzaUiState.value.pizzas[pizza].addOns[addOn].toString())
+
+    }
 
 }
