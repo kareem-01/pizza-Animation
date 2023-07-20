@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
@@ -129,9 +130,9 @@ fun PizzaSelectionContent(
     )
     val offset by animateDpAsState(
         targetValue = when (currentSize) {
-            PizzaSize.Small -> (-60).dp
+            PizzaSize.Small -> (-59).dp
             PizzaSize.Medium -> 0.dp
-            PizzaSize.Large -> 60.dp
+            PizzaSize.Large -> 59.dp
         },
         tween(500)
     )
@@ -159,7 +160,9 @@ fun PizzaSelectionContent(
 
         Box(
             modifier = Modifier
-                .fillMaxWidth(), contentAlignment = Alignment.Center
+                .fillMaxWidth()
+                .height(400.dp),
+            contentAlignment = Alignment.Center
         ) {
             Image(
                 painter = painterResource(id = R.drawable.plate),
@@ -167,7 +170,10 @@ fun PizzaSelectionContent(
                 modifier = Modifier
                     .padding(42.dp)
             )
-            HorizontalPager(pageCount = pizzaUiState.pizzas.size, state = pagerState) { page ->
+            HorizontalPager(
+                pageCount = pizzaUiState.pizzas.size,
+                state = pagerState,
+            ) { page ->
                 Box(
                     Modifier
                         .padding(72.dp)
@@ -186,7 +192,8 @@ fun PizzaSelectionContent(
                                 animationSpec = SpringSpec(
                                     stiffness = Spring.StiffnessLow
                                 )
-                            ),
+                            )
+                            .size(300.dp),
                         painter = painterResource(id = pizzaUiState.pizzas[page].breadType),
                         contentDescription = null,
                     )
@@ -198,7 +205,8 @@ fun PizzaSelectionContent(
                         ) {
                             Image(
                                 painter = painterResource(id = addOn.addOnsGroupId),
-                                contentDescription = null
+                                contentDescription = null,
+                                modifier = Modifier.size(300.dp)
                             )
                         }
                     }
@@ -219,7 +227,7 @@ fun PizzaSelectionContent(
                 modifier = Modifier
                     .size(50.dp)
                     .align(Alignment.Center)
-                    .offset(x=offset),
+                    .offset(x = offset),
                 shape = CircleShape,
                 colors = CardDefaults.cardColors(containerColor = Color.White),
                 elevation = CardDefaults.cardElevation(10.dp)
@@ -279,9 +287,17 @@ fun PizzaSelectionContent(
             colors = ButtonDefaults.buttonColors(containerColor = Brown),
             shape = RoundedCornerShape(16.dp)
         ) {
-            Icon(painter = painterResource(id = R.drawable.cart), contentDescription = null)
+            Icon(
+                painter = painterResource(id = R.drawable.cart),
+                contentDescription = null,
+                tint = Color.White
+            )
 
-            Text(text = "Add to Cart", modifier = Modifier.padding(start = 16.dp))
+            Text(
+                text = "Add to Cart",
+                modifier = Modifier.padding(start = 16.dp),
+                color = Color.White
+            )
         }
 
     }
