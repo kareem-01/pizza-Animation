@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.pizzaanimation.Model.PizzaSize
 
 @Composable
@@ -34,7 +35,8 @@ fun SizeButton(size: PizzaSize, currentSize: PizzaSize, onClickSize: (size: Pizz
                 PizzaSize.Medium -> "M"
                 PizzaSize.Large -> "L"
             }, color = Color.Black,
-            modifier = Modifier.clip(CircleShape)
+            modifier = Modifier.clip(CircleShape),
+            fontSize = 24.sp
         )
     }
 }

@@ -14,6 +14,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,16 +22,21 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,6 +48,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -55,6 +62,7 @@ import com.example.pizzaanimation.MainScreen.composables.SizeButton
 import com.example.pizzaanimation.Model.PizzaSelectionUiState
 import com.example.pizzaanimation.Model.PizzaSize
 import com.example.pizzaanimation.R
+import com.example.pizzaanimation.ui.theme.Brown
 import com.example.pizzaanimation.ui.theme.space8
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -122,6 +130,9 @@ fun PizzaSelectionContent(
         Modifier
             .fillMaxSize()
             .padding(horizontal = space8)
+            .background(Color.White),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Row(
             Modifier
@@ -186,22 +197,30 @@ fun PizzaSelectionContent(
 
         Text(
             text = '$' + pizzaUiState.pizzas[pagerState.currentPage].price.toString(),
-            modifier = Modifier.align(Alignment.CenterHorizontally).padding(bottom = 16.dp),
-            fontWeight = FontWeight.Bold
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally),
+            fontWeight = FontWeight.Bold,
+            fontSize = 24.sp
         )
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+
+        Box(modifier = Modifier) {
+
+        }
+        Row(
+            modifier = Modifier,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             SizeButton(
                 size = PizzaSize.Small,
                 onClickSize = sizeButtonClick,
                 currentSize = currentSize
             )
-            HorizontalSpacer(spacing = 8.dp)
             SizeButton(
                 size = PizzaSize.Medium,
                 onClickSize = sizeButtonClick,
                 currentSize = currentSize
             )
-            HorizontalSpacer(spacing = 8.dp)
             SizeButton(
                 size = PizzaSize.Large,
                 onClickSize = sizeButtonClick,
@@ -211,7 +230,9 @@ fun PizzaSelectionContent(
 
         Text(
             text = "Customize Your Pizza",
-            modifier = Modifier.padding(top = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp, start = 24.dp),
             fontWeight = FontWeight.SemiBold
         )
         LazyRow(
@@ -227,6 +248,18 @@ fun PizzaSelectionContent(
                     isSelected = addOns[ingredientId].isSelected
                 )
             }
+        }
+
+        Button(
+            onClick = {}, modifier = Modifier
+                .width(200.dp)
+                .height(50.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Brown),
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            Icon(painter = painterResource(id = R.drawable.cart), contentDescription = null)
+
+            Text(text = "Add to Cart", modifier = Modifier.padding(start = 16.dp))
         }
 
     }
