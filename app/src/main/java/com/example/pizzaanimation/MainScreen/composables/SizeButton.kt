@@ -22,7 +22,7 @@ fun SizeButton(size: PizzaSize, currentSize: PizzaSize, onClickSize: (size: Pizz
     Button(
         onClick = { onClickSize(size) },
         contentPadding = PaddingValues(0.dp),
-        elevation = if (size == currentSize) ButtonDefaults.buttonElevation(10.dp)
+        elevation = if (size == currentSize) ButtonDefaults.buttonElevation(0.dp)
         else ButtonDefaults.buttonElevation(0.dp),
         colors = ButtonDefaults.buttonColors(Color.White),
         shape = CircleShape,

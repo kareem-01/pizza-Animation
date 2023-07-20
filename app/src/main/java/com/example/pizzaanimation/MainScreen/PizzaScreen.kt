@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -31,12 +32,15 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -123,6 +127,14 @@ fun PizzaSelectionContent(
         targetValue = currentSizeScale,
         tween(350, easing = LinearEasing)
     )
+    val offset by animateDpAsState(
+        targetValue = when (currentSize) {
+            PizzaSize.Small -> (-60).dp
+            PizzaSize.Medium -> 0.dp
+            PizzaSize.Large -> 60.dp
+        },
+        tween(500)
+    )
     LaunchedEffect(key1 = pizzaUiState.pizzas[pagerState.currentPage].pizzaSize) {
 
     }
@@ -137,7 +149,7 @@ fun PizzaSelectionContent(
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(bottom = 32.dp, top = 16.dp),
+                .padding(bottom = 16.dp, top = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Icon(imageVector = Icons.Rounded.ArrowBack, contentDescription = null)
@@ -191,7 +203,6 @@ fun PizzaSelectionContent(
                         }
                     }
                 }
-
             }
         }
 
@@ -204,35 +215,46 @@ fun PizzaSelectionContent(
         )
 
         Box(modifier = Modifier) {
+            Card(
+                modifier = Modifier
+                    .size(50.dp)
+                    .align(Alignment.Center)
+                    .offset(x=offset),
+                shape = CircleShape,
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                elevation = CardDefaults.cardElevation(10.dp)
 
-        }
-        Row(
-            modifier = Modifier,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            SizeButton(
-                size = PizzaSize.Small,
-                onClickSize = sizeButtonClick,
-                currentSize = currentSize
-            )
-            SizeButton(
-                size = PizzaSize.Medium,
-                onClickSize = sizeButtonClick,
-                currentSize = currentSize
-            )
-            SizeButton(
-                size = PizzaSize.Large,
-                onClickSize = sizeButtonClick,
-                currentSize = currentSize
-            )
+            ) {
+            }
+            Row(
+                modifier = Modifier,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                SizeButton(
+                    size = PizzaSize.Small,
+                    onClickSize = sizeButtonClick,
+                    currentSize = currentSize
+                )
+                SizeButton(
+                    size = PizzaSize.Medium,
+                    onClickSize = sizeButtonClick,
+                    currentSize = currentSize
+                )
+                SizeButton(
+                    size = PizzaSize.Large,
+                    onClickSize = sizeButtonClick,
+                    currentSize = currentSize
+                )
+            }
+
         }
 
         Text(
             text = "Customize Your Pizza",
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp, start = 24.dp),
+                .padding(start = 24.dp),
             fontWeight = FontWeight.SemiBold
         )
         LazyRow(
